@@ -22,6 +22,7 @@ export default () => {
 
   const firstNameInputRef = React.useRef();
   const titleInputRef = React.useRef();
+  const corporationInputRef = React.useRef();
 
   const storeData = async (value) => {
     try {
@@ -56,7 +57,6 @@ export default () => {
     (async () => {
       let storedData = await getData();
       if (storedData) setCustomers(storedData);
-      console.log(storedData);
     })();
   }, []);
 
@@ -122,6 +122,34 @@ export default () => {
             {errors.title.message}
           </Text>
         ) : null}
+
+        {/* CORPORATION FIELD */}
+        <Text style={styles.label}>Corporation</Text>
+        <Controller
+          control={control}
+          onFocus={() => {
+            corporationInputRef.current.focus();
+          }}
+          defaultValue=""
+          render={({onChange, onBlur, value}) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              ref={corporationInputRef}
+            />
+          )}
+          name="corporation"
+          rules={{required: requiredError}}
+        />
+        {errors.firstName ? (
+          <Text style={{...styles.label, ...styles.error}}>
+            {errors.corporation.message}
+          </Text>
+        ) : null}
+
+        {/* BUTTONS */}
         <View style={styles.button}>
           <Button
             color
@@ -140,6 +168,8 @@ export default () => {
           />
         </View>
       </View>
+
+      {/* CUSTOMER LIST */}
       <View>
         {customers.length ? (
           <Text
@@ -148,7 +178,7 @@ export default () => {
           </Text>
         ) : null}
         {customers.map((cust, i) => (
-          <CustomerList data={cust} key={i} index={i}/>
+          <CustomerList data={cust} key={i} index={i} />
         ))}
       </View>
     </ScrollView>
