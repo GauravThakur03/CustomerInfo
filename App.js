@@ -23,6 +23,14 @@ export default () => {
   const firstNameInputRef = React.useRef();
   const titleInputRef = React.useRef();
   const corporationInputRef = React.useRef();
+  const address1InputRef = React.useRef();
+  const address2InputRef = React.useRef();
+  const cityInputRef = React.useRef();
+  const stateInputRef = React.useRef();
+  const zipInputRef = React.useRef();
+  const cellTelInputRef = React.useRef();
+  const emailInputRef = React.useRef();
+  const urlInputRef = React.useRef();
 
   const storeData = async (value) => {
     try {
@@ -48,6 +56,7 @@ export default () => {
   };
 
   const onSubmit = (data) => {
+    console.log(data);
     (async () => {
       await storeData(data);
     })();
@@ -117,7 +126,7 @@ export default () => {
           name="title"
           rules={{required: requiredError}}
         />
-        {errors.firstName ? (
+        {errors.title ? (
           <Text style={{...styles.label, ...styles.error}}>
             {errors.title.message}
           </Text>
@@ -143,9 +152,253 @@ export default () => {
           name="corporation"
           rules={{required: requiredError}}
         />
-        {errors.firstName ? (
+        {errors.corporation ? (
           <Text style={{...styles.label, ...styles.error}}>
             {errors.corporation.message}
+          </Text>
+        ) : null}
+
+        {/* ADDRESS1 FIELD */}
+        <Text style={styles.label}>Address1</Text>
+        <Controller
+          control={control}
+          onFocus={() => {
+            address1InputRef.current.focus();
+          }}
+          defaultValue=""
+          render={({onChange, onBlur, value}) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              ref={address1InputRef}
+            />
+          )}
+          name="address1"
+          rules={{required: requiredError}}
+        />
+        {errors.address1 ? (
+          <Text style={{...styles.label, ...styles.error}}>
+            {errors.address1.message}
+          </Text>
+        ) : null}
+
+        {/* ADDRESS2 FIELD */}
+        <Text style={styles.label}>Address2</Text>
+        <Controller
+          control={control}
+          onFocus={() => {
+            address2InputRef.current.focus();
+          }}
+          defaultValue=""
+          render={({onChange, onBlur, value}) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              ref={address2InputRef}
+            />
+          )}
+          name="address2"
+          rules={{required: requiredError}}
+        />
+        {errors.address2 ? (
+          <Text style={{...styles.label, ...styles.error}}>
+            {errors.address2.message}
+          </Text>
+        ) : null}
+
+        {/* CITY FIELD */}
+        <Text style={styles.label}>City</Text>
+        <Controller
+          control={control}
+          onFocus={() => {
+            cityInputRef.current.focus();
+          }}
+          defaultValue=""
+          render={({onChange, onBlur, value}) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              ref={cityInputRef}
+            />
+          )}
+          name="city"
+          rules={{required: requiredError}}
+        />
+        {errors.city ? (
+          <Text style={{...styles.label, ...styles.error}}>
+            {errors.city.message}
+          </Text>
+        ) : null}
+
+        {/* STATE FIELD */}
+        <Text style={styles.label}>State</Text>
+        <Controller
+          control={control}
+          onFocus={() => {
+            stateInputRef.current.focus();
+          }}
+          defaultValue=""
+          render={({onChange, onBlur, value}) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              ref={stateInputRef}
+            />
+          )}
+          name="state"
+          rules={{required: requiredError}}
+        />
+        {errors.state ? (
+          <Text style={{...styles.label, ...styles.error}}>
+            {errors.state.message}
+          </Text>
+        ) : null}
+
+        {/* ZIP FIELD */}
+        <Text style={styles.label}>ZIP</Text>
+        <Controller
+          control={control}
+          onFocus={() => {
+            zipInputRef.current.focus();
+          }}
+          defaultValue=""
+          render={({onChange, onBlur, value}) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              ref={zipInputRef}
+              keyboardType="number-pad"
+            />
+          )}
+          name="zip"
+          rules={{
+            required: requiredError,
+            pattern: /^[1-9][0-9]{5}$/,
+          }}
+        />
+        {errors.zip?.type==='required' ? (
+          <Text style={{...styles.label, ...styles.error}}>
+            {errors.zip.message}
+          </Text>
+        ) : null}
+        {errors.zip?.type === 'pattern' ? (
+          <Text style={{...styles.label, ...styles.error}}>
+            Please enter valid zip code
+          </Text>
+        ) : null}
+
+        {/* CELL TEL FIELD */}
+        <Text style={styles.label}>Cell Tele</Text>
+        <Controller
+          control={control}
+          onFocus={() => {
+            cellTelInputRef.current.focus();
+          }}
+          defaultValue=""
+          render={({onChange, onBlur, value}) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              ref={cellTelInputRef}
+              keyboardType="phone-pad"
+            />
+          )}
+          name="cellTel"
+          rules={{
+            required: requiredError,
+            pattern: /^[6-9]\d{9}$/,
+          }}
+        />
+        {errors.cellTel?.type ==='required'? (
+          <Text style={{...styles.label, ...styles.error}}>
+            {errors.cellTel.message}
+          </Text>
+        ) : null}
+        {errors.cellTel?.type === 'pattern' ? (
+          <Text style={{...styles.label, ...styles.error}}>
+            Please enter valid 10 digit mobile number
+          </Text>
+        ) : null}
+
+        {/* EMAIL FIELD */}
+        <Text style={styles.label}>Email</Text>
+        <Controller
+          control={control}
+          onFocus={() => {
+            emailInputRef.current.focus();
+          }}
+          defaultValue=""
+          render={({onChange, onBlur, value}) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              ref={emailInputRef}
+              keyboardType="email-address"
+            />
+          )}
+          name="email"
+          rules={{
+            required: requiredError,
+            pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/,
+          }}
+        />
+        {errors.email?.type ==='required'? (
+          <Text style={{...styles.label, ...styles.error}}>
+            {errors.email.message}
+          </Text>
+        ) : null}
+        {errors.email?.type === 'pattern' ? (
+          <Text style={{...styles.label, ...styles.error}}>
+            Please enter valid email address
+          </Text>
+        ) : null}
+
+        {/* URL FIELD */}
+        <Text style={styles.label}>URL</Text>
+        <Controller
+          control={control}
+          onFocus={() => {
+            urlInputRef.current.focus();
+          }}
+          defaultValue=""
+          render={({onChange, onBlur, value}) => (
+            <TextInput
+              style={styles.input}
+              onBlur={onBlur}
+              onChangeText={(value) => onChange(value)}
+              value={value}
+              ref={urlInputRef}
+              keyboardType="url"
+            />
+          )}
+          name="url"
+          rules={{
+            required: requiredError,
+            pattern: /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
+          }}
+        />
+        {errors.url?.type ==='required'? (
+          <Text style={{...styles.label, ...styles.error}}>
+            {errors.url.message}
+          </Text>
+        ) : null}
+        {errors.url?.type === 'pattern' ? (
+          <Text style={{...styles.label, ...styles.error}}>
+            Please enter valid URL
           </Text>
         ) : null}
 
