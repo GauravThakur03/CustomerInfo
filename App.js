@@ -11,11 +11,13 @@ import {
 import {useForm, Controller} from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomerList from './CustomerList';
+import {Picker} from '@react-native-picker/picker';
 
 const requiredError = 'This field is required.';
 
 export default () => {
   const [customers, setCustomers] = React.useState([]);
+  const [customerType, setCustomerType] = React.useState('');
   const {handleSubmit, control, reset, errors} = useForm();
 
   const [successMsg, setSuccessMsg] = React.useState('');
@@ -286,7 +288,7 @@ export default () => {
             pattern: /^[1-9][0-9]{5}$/,
           }}
         />
-        {errors.zip?.type==='required' ? (
+        {errors.zip?.type === 'required' ? (
           <Text style={{...styles.label, ...styles.error}}>
             {errors.zip.message}
           </Text>
@@ -321,7 +323,7 @@ export default () => {
             pattern: /^[6-9]\d{9}$/,
           }}
         />
-        {errors.cellTel?.type ==='required'? (
+        {errors.cellTel?.type === 'required' ? (
           <Text style={{...styles.label, ...styles.error}}>
             {errors.cellTel.message}
           </Text>
@@ -356,7 +358,7 @@ export default () => {
             pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/,
           }}
         />
-        {errors.email?.type ==='required'? (
+        {errors.email?.type === 'required' ? (
           <Text style={{...styles.label, ...styles.error}}>
             {errors.email.message}
           </Text>
@@ -391,7 +393,7 @@ export default () => {
             pattern: /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
           }}
         />
-        {errors.url?.type ==='required'? (
+        {errors.url?.type === 'required' ? (
           <Text style={{...styles.label, ...styles.error}}>
             {errors.url.message}
           </Text>
@@ -399,6 +401,39 @@ export default () => {
         {errors.url?.type === 'pattern' ? (
           <Text style={{...styles.label, ...styles.error}}>
             Please enter valid URL
+          </Text>
+        ) : null}
+
+        {/* CUSTOMER TYPE FIELD */}
+        <Text style={styles.label}>Customer Type</Text>
+        <Controller
+          control={control}
+          defaultValue=""
+          render={({onChange, value}) => (
+            <Picker
+              selectedValue={value}
+              style={{
+                height: 50,
+                width: 100,
+                backgroundColor: 'white',
+                width: '100%',
+              }}
+              onValueChange={(value, itemIndex) => {
+                onChange(value);
+                setCustomerType(value);
+              }}>
+              <Picker.Item label="Type A" value="customerA" />
+              <Picker.Item label="Type B" value="customerB" />
+            </Picker>
+          )}
+          name="customerType"
+          rules={{
+            required: requiredError,
+          }}
+        />
+        {errors.customerType?.type === 'required' ? (
+          <Text style={{...styles.label, ...styles.error}}>
+            {errors.customerType.message}
           </Text>
         ) : null}
 
