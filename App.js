@@ -12,17 +12,17 @@ import {useForm, Controller} from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomerList from './CustomerList';
 import {Picker} from '@react-native-picker/picker';
+import defaultValues from './defaultValues';
 
 const requiredError = 'This field is required.';
 
 export default () => {
   const [customers, setCustomers] = React.useState([]);
-  const [customerType, setCustomerType] = React.useState('');
   const {handleSubmit, control, reset, errors} = useForm();
 
   const [successMsg, setSuccessMsg] = React.useState('');
 
-  const firstNameInputRef = React.useRef();
+  const nameInputRef = React.useRef();
   const titleInputRef = React.useRef();
   const corporationInputRef = React.useRef();
   const address1InputRef = React.useRef();
@@ -40,9 +40,11 @@ export default () => {
       await AsyncStorage.setItem('customer_info', jsonValue);
       setCustomers([...customers, value]);
       setSuccessMsg(
-        'Data saved to local storage, Find customer list at bottom',
+        `Following Data saved to local storage, Find customer list at bottom. DATA::${JSON.stringify(
+          value,
+        )}`,
       );
-      reset();
+      reset(defaultValues);
     } catch (e) {
       // saving error
     }
@@ -81,14 +83,13 @@ export default () => {
           <Text style={styles.heading}>
             Customer Primary Contact Information
           </Text>
-          <Text style={{...styles.label, color: 'green'}}>{successMsg}</Text>
         </View>
         {/* NAME FIELD */}
-        <Text style={styles.label}>First name</Text>
+        <Text style={styles.label}>Name</Text>
         <Controller
           control={control}
           onFocus={() => {
-            firstNameInputRef.current.focus();
+            nameInputRef.current.focus();
           }}
           defaultValue=""
           render={({onChange, onBlur, value}) => (
@@ -97,15 +98,15 @@ export default () => {
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
               value={value}
-              ref={firstNameInputRef}
+              ref={nameInputRef}
             />
           )}
-          name="firstName"
+          name="name"
           rules={{required: requiredError}}
         />
-        {errors.firstName ? (
+        {errors.name ? (
           <Text style={{...styles.label, ...styles.error}}>
-            {errors.firstName.message}
+            {errors.name.message}
           </Text>
         ) : null}
         {/* TITLE FIELD */}
@@ -408,7 +409,7 @@ export default () => {
         <Text style={styles.label}>Customer Type</Text>
         <Controller
           control={control}
-          defaultValue=""
+          defaultValue="customerA"
           render={({onChange, value}) => (
             <Picker
               selectedValue={value}
@@ -420,7 +421,6 @@ export default () => {
               }}
               onValueChange={(value, itemIndex) => {
                 onChange(value);
-                setCustomerType(value);
               }}>
               <Picker.Item label="Type A" value="customerA" />
               <Picker.Item label="Type B" value="customerB" />
@@ -445,12 +445,18 @@ export default () => {
             onPress={handleSubmit(onSubmit)}
           />
         </View>
+        {successMsg ? (
+          <View>
+            <Text style={{...styles.label, color: 'green'}}>{successMsg}</Text>
+          </View>
+        ) : null}
+
         <View style={styles.button}>
           <Button
             color
             title="Close"
             onPress={() => {
-              reset();
+              reset(defaultValues);
               setSuccessMsg('');
             }}
           />

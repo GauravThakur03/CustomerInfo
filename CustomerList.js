@@ -11,7 +11,7 @@ const CustomerList = ({data,index}) => {
         padding: 8,
         flexDirection: 'row',
       }}>
-      <Text style={{color: 'black'}}>{data.firstName}</Text>
+      <Text style={{color: 'black'}}>{data.name}</Text>
       <Text style={{color: 'black'}}>{data.title}</Text>
     </View>
   );
